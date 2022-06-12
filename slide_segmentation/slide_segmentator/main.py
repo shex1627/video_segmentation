@@ -35,7 +35,7 @@ def main():
     mkdir_if_not_exist(ocr_output_dir)
     # sample img, estimate fps
     logger.info("sampling images")
-    video_fps = get_fps(video_file_path)
+    video_fps = get_fps(video_file_path) # doubts if this is right
     logger.info(f"video fps {video_fps}")
     sample_video_img(video_file_path, output_data_dir, seconds_per_frame=1, fps=video_fps, max_duration=args.max_duration)
 

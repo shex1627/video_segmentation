@@ -26,6 +26,9 @@ def jaccard_distance(A, B):
     denominator = A.union(B)
 
     #Take the ratio of sizes
+    if len(denominator) == 0:
+        return 0
+
     distance = len(nominator)/len(denominator)
     
     return distance
@@ -59,9 +62,9 @@ def get_paragraph(ocr_result: list, threshold: float=0.9, delimiter=" nextline "
 
 
 word_dissim = make_token_dissim_func(lambda doc: doc.lower().split(" "), 
-                      lambda doc1_tokens, doc2_tokens: np.abs(len(doc1_tokens) - len(doc2_tokens))/max(len(doc1_tokens), len(doc2_tokens)))
+                      lambda doc1_tokens, doc2_tokens: np.abs(len(doc1_tokens) - len(doc2_tokens))/max(len(doc1_tokens), len(doc2_tokens), 1))
 letter_dissim = make_token_dissim_func(lambda doc: list(doc.lower()), 
-                      lambda doc1_tokens, doc2_tokens: np.abs(len(doc1_tokens) - len(doc2_tokens))/max(len(doc1_tokens), len(doc2_tokens)))
+                      lambda doc1_tokens, doc2_tokens: np.abs(len(doc1_tokens) - len(doc2_tokens))/max(len(doc1_tokens), len(doc2_tokens), 1))
 
 jaccard_letter_dissim = make_token_dissim_func(lambda doc: list(doc.lower()), 
                       lambda doc1_tokens, doc2_tokens: jaccard_distance(doc1_tokens, doc2_tokens))
