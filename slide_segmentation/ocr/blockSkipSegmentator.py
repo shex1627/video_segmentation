@@ -11,11 +11,13 @@ import cv2
 import logging 
 from dataclasses import dataclass, field
 
+
 logger = logging.getLogger("skip_segmentation")
 
 class BlockSkipSegmentator:
     def __init__(self, chunk_size: int, img_file_dict: dict, 
-                        ocr_model: ..., clf_model: ..., doc_diff_comparator: docDiffBuilder=doc_diff_comparator) -> None:
+                        ocr_model: ..., clf_model: ..., 
+                        doc_diff_comparator: docDiffBuilder=doc_diff_comparator) -> None:
         self.chunk_size = chunk_size
         self.ocr = ocr_model
         self.doc_diff_comparator = doc_diff_comparator
@@ -87,25 +89,22 @@ class BlockSkipSegmentator:
         return new_slide_indices
 
 
-    def get_slide_breakpoints(self):
+    def get_slide_breakpoints(self, max_block_count: int=float("inf")):
         img_files_blocks = np.array_split(list(self.img_data_dict), len(self.img_data_dict)//self.chunk_size)
         break_points = []
 
         i = 0
-        max_count = 60
         for img_files_block in img_files_blocks:
             logger.info("#####")
             logger.info("looking at new block")
             logger.info("#####")
             # check if the first one is split point
-            #first_file = img_files_block[0]
-            frame_index = img_files_block[0]#int(first_file.name.split(".")[0])
+            frame_index = img_files_block[0]
             break_point_dict = self.check_if_frame_break_point(frame_index)
             is_break_point = break_point_dict['new_slide_prediction']
             if is_break_point:
                 break_points.append(break_point_dict)
-            #last_file = img_files_block[-1]
-            last_file_frame_index = img_files_block[-1] #int(last_file.name.split(".")[0])
+            last_file_frame_index = img_files_block[-1]
             
             compare_head_tail_result = self.check_if_frame_diff(frame_index, last_file_frame_index)
             same_slide_block = not compare_head_tail_result['new_slide_prediction']
@@ -122,7 +121,7 @@ class BlockSkipSegmentator:
             logger.info(f"block_new_slides: {block_new_slides}")
             break_points += block_new_slides
             i+=1
-            if i == max_count:
+            if i == max_block_count:
                 break
         return pd.DataFrame(break_points)
 

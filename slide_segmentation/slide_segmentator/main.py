@@ -43,16 +43,16 @@ def main():
     ocr_results = run_ocr(output_data_dir, ocr_output_dir)
     # process ocr and get diff df
     diff_df = get_diff_df(ocr_results)
-    ocf_features_dif = os.path.join(img_tmp_dir, "video_ocf_features")
-    mkdir_if_not_exist(ocf_features_dif)
-    diff_df.to_csv(os.path.join( ocf_features_dif, video_file_name+".csv"), index=False)
+    ocf_features_dir = os.path.join(img_tmp_dir, "video_ocf_features")
+    mkdir_if_not_exist(ocf_features_dir)
+    diff_df.to_csv(os.path.join( ocf_features_dir, video_file_name+".csv"), index=False)
 
     # load model and classify
     prediction_df = diff_df.copy()
     prediction_df = prediction_df.rename(columns={'letter_dis':'letter_dissim'})
     prediction_df['dissimilarity'] = 1
     prediction_df['new_slide_prediction'] = new_slide_clf.predict(prediction_df[feature_names])
-    prediction_df.query("new_slide_prediction").to_csv(os.path.join(ocf_features_dif, video_file_name+"_new_slide.csv"), index=False)
+    prediction_df.query("new_slide_prediction").to_csv(os.path.join(ocf_features_dir, video_file_name+"_new_slide.csv"), index=False)
 
     return prediction_df 
 
@@ -61,10 +61,8 @@ import argparse
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("--input_file", help="data file with filename field")
-    parser.add_argument("--img_sample_dir", help="data file with filename field", default=".")
-    parser.add_argument("--max_duration", help="data file with filename field", default=float("inf"), type=int)
+    parser.add_argument("--input_file", help="input mp4 file path")
+    parser.add_argument("--img_sample_dir", help="directory to store the images and outputs", default=".")
+    parser.add_argument("--max_duration", help="max number of seconds of the video to process", default=float("inf"), type=int)
     args = parser.parse_args()
-    
-    
     main()
