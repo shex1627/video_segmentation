@@ -18,4 +18,7 @@ python main.py --input_file C:\\Users\\alistar\\Desktop\\ds\\video_segmentation\
 
 
 cd C:\Users\alistar\Desktop\ds\video_segmentation\slide_segmentation\slide_segmentator
-python block_skip_segmentation.py --input_file C:\\Users\\alistar\\Desktop\\ds\\video_segmentation\\data\\test_videos\\test_video_18.mp4 --img_sample_dir C:\\Users\\alistar\\Desktop\\ds\\video_segmentation\\data\\tmp --max_duration 200 --max_block_count 10
+python block_skip_segmentation.py --input_file C:\\Users\\alistar\\Desktop\\ds\\video_segmentation\\data\\test_videos\\test_video_20.mp4 --img_sample_dir C:\\Users\\alistar\\Desktop\\ds\\video_segmentation\\data\\tmp --max_duration 100 --max_block_count 10
+
+# things to do
+!python3 -m spacy download en_core_web_sm

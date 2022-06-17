@@ -76,10 +76,7 @@ def img_resize(img, scale: int=60):
 
 def init_ocr():
     from paddleocr import PaddleOCR
-    ocr = PaddleOCR(rec_model_dir="C:/Users/alistar/Desktop/ds/PaddleOCR-release-2.1/models/en_number_mobile_v2.0_rec_infer/",
-                det_model_dir="C:/Users/alistar/Desktop/ds/PaddleOCR-release-2.1/ch_ppocr_server_v2.0_det_infer/",
-                    rec_char_dict_path="C:/Users/alistar/Desktop/ds/PaddleOCR-release-2.1/ppocr/utils/en_dict.txt"
-                )
+    ocr = PaddleOCR(use_angle_cls=True, lang='en')
     return ocr
     
 
